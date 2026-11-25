@@ -48,9 +48,17 @@ After the build, a register-spill check runs over the produced `.so`. CUTLASS ke
 python tests/test-sparse-prefill.py
 python tests/test-sparse-decode.py
 python tests/test-fused-norm-rope-attn-rope-cast.py
+python -m pytest tests/test_sparse_fp4kv.py
 ```
 
 The fused-kernel test additionally needs [TileLang](https://github.com/tile-ai/tilelang), [Tile-Kernels](https://github.com/deepseek-ai/TileKernels/) and [DeepGEMM](https://github.com/deepseek-ai/DeepGEMM). Tests for the frozen kernels live in [tests/legacy/](tests/legacy/).
+
+## License
+
+FlashMLA is released under the MIT License ([LICENSE](LICENSE)). The sparse MLA kernel over the fp4 KV pool
+(`csrc_ops/sparse_fp4kv_fwd.cpp`, `csrc_ops/sparse_fp4kv_sm100/`, `flash_mla/sparse_fp4kv.py` and
+`tests/test_sparse_fp4kv.py`) is derived from [SGLang](https://github.com/sgl-project/sglang) and stays under the
+Apache License 2.0 ([LICENSE-APACHE](LICENSE-APACHE)); each of those files carries its own notice.
 
 ## Acknowledgement
 
