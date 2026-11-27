@@ -16,7 +16,13 @@ from flash_mla.flash_mla_interface import (
     has_small_heads_prefill,
 )
 
+from flash_mla.sparse_fp4kv import (
+    sparse_fp4kv_fwd,
+    sparse_fp4kv_num_splits,
+)
+
 from . import fused_norm_rope_attn_rope_cast
+from . import sparse_fp4kv
 
 __all__ = [
     "get_mla_metadata",
@@ -30,4 +36,7 @@ __all__ = [
     "has_sparse_prefill_extra_kv",
     "has_legacy",
     "has_small_heads_prefill",
+    "sparse_fp4kv",
+    "sparse_fp4kv_fwd",
+    "sparse_fp4kv_num_splits",
 ]

@@ -11,7 +11,12 @@ from setup_legacy_sources import LEGACY_CUDA_ARCHS, legacy_sources
 # their own architectures, but the same stable C++ ABI as the current kernels, so that the wheel
 # is abi3 as a whole. FLASH_MLA_BUILD_LEGACY=0 ships only the current kernels.
 # See csrc_legacy/README.md.
-OUR_OP_SOURCES = ["csrc_ops/sched_meta.cpp"]
+OUR_OP_SOURCES = [
+    "csrc_ops/sched_meta.cpp",
+    # sparse MLA over the fp4 KV pool with per-token e4m3 scales (SM100)
+    "csrc_ops/sparse_fp4kv_fwd.cpp",
+    "csrc_ops/sparse_fp4kv_sm100/kernel.cu",
+]
 EXT_NAME_LEGACY = "flash_mla._C_legacy"
 BUILD_LEGACY = os.environ.get("FLASH_MLA_BUILD_LEGACY", "1") == "1"
 
@@ -330,11 +335,13 @@ def main():
         long_description=(THIS_DIR / "README.md").read_text(),
         long_description_content_type="text/markdown",
         url="https://github.com/sgl-project/FlashMLA",
-        license="MIT",
-        license_files=["LICENSE"],
+        # MIT for FlashMLA; Apache-2.0 for the sparse fp4 KV kernel derived from SGLang (csrc_ops/sparse_fp4kv*).
+        license="MIT AND Apache-2.0",
+        license_files=["LICENSE", "LICENSE-APACHE"],
         classifiers=[
             "Programming Language :: Python :: 3",
             "License :: OSI Approved :: MIT License",
+            "License :: OSI Approved :: Apache Software License",
             "Environment :: GPU :: NVIDIA CUDA",
         ],
         python_requires=">=3.10",
